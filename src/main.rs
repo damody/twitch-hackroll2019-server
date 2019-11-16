@@ -54,6 +54,7 @@ struct Data_All {
     miss: i32,
     crit: i32,
     stun: i32,
+    bits: i32,
 }
 
 fn get_url() -> String {
@@ -151,6 +152,7 @@ fn get_live_master(db: web::Data<mysql::Pool> ,item: web::Json<Data_get_live_mas
     let mut miss: i32 = 0;
     let mut crit: i32 = 0;
     let mut stun: i32 = 0;
+    let mut bits: i32 = 0;
     for row in qres {
         count += 1;
         let a = row.unwrap().clone();
@@ -166,7 +168,7 @@ fn get_live_master(db: web::Data<mysql::Pool> ,item: web::Json<Data_get_live_mas
         stun = mysql::from_value(a.get("stun").unwrap());
         break;
     }
-    let sql = format!("select points from user where user_id='{}' and channel_id='{}';", 
+    let sql = format!("select points ,bits from user where user_id='{}' and channel_id='{}';", 
         item.0.user_id, item.0.channel_id);
     println!("sql: {}", sql);
     let qres = conn.query(sql.clone()).unwrap();
@@ -174,6 +176,7 @@ fn get_live_master(db: web::Data<mysql::Pool> ,item: web::Json<Data_get_live_mas
         count += 1;
         let a = row.unwrap().clone();
         points = mysql::from_value(a.get("points").unwrap());
+        bits = mysql::from_value(a.get("bits").unwrap());
     }
     let res = Data_All {
         points: points,
@@ -187,6 +190,7 @@ fn get_live_master(db: web::Data<mysql::Pool> ,item: web::Json<Data_get_live_mas
         miss: miss,
         crit: crit,
         stun: stun,
+        bits: bits,
     };
     HttpResponse::Ok().json(res)
 }
