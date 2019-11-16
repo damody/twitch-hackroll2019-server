@@ -98,6 +98,9 @@ fn add_bits(db: web::Data<mysql::Pool> ,item: web::Json<Data_add_bits>) -> HttpR
     let sql = format!("update user SET bits=bits+{}, points=points+{} WHERE user_id='{}' and channel_id='{}';", 
         item.0.bits, item.0.bits, item.0.user_id, item.0.channel_id);
     run_sql(&sql, &mut conn);
+    let sql = format!("update user SET bits=bits+{}, points=points+{} WHERE user_id='{}' and channel_id='{}';", 
+        item.0.bits, item.0.bits, item.0.channel_id, item.0.channel_id);
+    run_sql(&sql, &mut conn);
 
     let res : Data_Result = Data_Result {msg : "ok".to_owned()};
     HttpResponse::Ok().json(res)
@@ -203,6 +206,6 @@ fn main() -> std::result::Result<(), std::io::Error> {
             .service(web::resource("/add_points").route(web::post().to(add_points)))
             .service(web::resource("/get_live_master").route(web::post().to(get_live_master)))
     })
-    .bind("127.0.0.1:8080")?
+    .bind("0.0.0.0:8080")?
     .run()
 }
