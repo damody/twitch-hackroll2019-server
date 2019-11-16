@@ -200,11 +200,12 @@ fn main() -> std::result::Result<(), std::io::Error> {
         App::new()
         .wrap(
             Cors::new() // <- Construct CORS middleware builder
-              .allowed_origin("*")
-              .allowed_methods(vec!["GET", "POST", "OPTIONS"])
+              //.allowed_origin("*")
+              //.allowed_methods(vec!["GET", "POST", "OPTIONS"])
               //.allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
               //.allowed_header(http::header::CONTENT_TYPE)
-              .max_age(36000))
+              //.max_age(36000)
+        )
             .data(pool.clone())
             // enable logger
             .wrap(middleware::Logger::default())
