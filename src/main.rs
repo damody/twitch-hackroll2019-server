@@ -197,6 +197,13 @@ fn main() -> std::result::Result<(), std::io::Error> {
     
     HttpServer::new(move || {
         App::new()
+        .wrap(
+            Cors::new() // <- Construct CORS middleware builder
+              .allowed_origin("https://*")
+              .allowed_methods(vec!["GET", "POST"])
+              .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
+              .allowed_header(http::header::CONTENT_TYPE)
+              .max_age(3600))
             .data(pool.clone())
             // enable logger
             .wrap(middleware::Logger::default())
@@ -206,6 +213,6 @@ fn main() -> std::result::Result<(), std::io::Error> {
             .service(web::resource("/add_points").route(web::post().to(add_points)))
             .service(web::resource("/get_live_master").route(web::post().to(get_live_master)))
     })
-    .bind("0.0.0.0:8080")?
+    .bind("0.0.0.0:80")?
     .run()
 }
