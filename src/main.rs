@@ -1,6 +1,7 @@
 use actix_web::{
-    error, middleware, web, App, HttpRequest, HttpResponse, HttpServer,
+    http,error, middleware, web, App, HttpRequest, HttpResponse, HttpServer,
 };
+use actix_cors::Cors;
 use bytes::BytesMut;
 use futures::{Future, Stream};
 use json::JsonValue;
