@@ -99,8 +99,8 @@ fn add_bits(db: web::Data<mysql::Pool> ,item: web::Json<Data_add_bits>) -> HttpR
     let sql = format!("update user SET bits=bits+{}, points=points+{} WHERE user_id='{}' and channel_id='{}';", 
         item.0.bits, item.0.bits, item.0.user_id, item.0.channel_id);
     run_sql(&sql, &mut conn);
-    let sql = format!("update user SET bits=bits+{}, points=points+{} WHERE user_id='{}' and channel_id='{}';", 
-        item.0.bits, item.0.bits, item.0.channel_id, item.0.channel_id);
+    let sql = format!("update user SET points=points+{} WHERE user_id='{}' and channel_id='{}';", 
+        item.0.bits, item.0.channel_id, item.0.channel_id);
     run_sql(&sql, &mut conn);
 
     let res : Data_Result = Data_Result {msg : "ok".to_owned()};
