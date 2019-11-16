@@ -200,7 +200,7 @@ fn main() -> std::result::Result<(), std::io::Error> {
         App::new()
         .wrap(
             Cors::new() // <- Construct CORS middleware builder
-              .allowed_origin("https://*")
+              .allowed_origin("*")
               .allowed_methods(vec!["GET", "POST"])
               .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
               .allowed_header(http::header::CONTENT_TYPE)
